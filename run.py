@@ -37,17 +37,26 @@ cf=configparser.ConfigParser()
 cf.read(os.path.dirname(os.path.realpath(__file__))+'/config.ini',encoding='utf8')
 
 # 用户配置项
-excelFileName=cf.get('excel-file','name')
-targetDir=cf.get('excel-file','path')
+excelFileName=cf['excel-file']['name']
+targetDir=cf['excel-file']['path']
 # 初始时间
-startDate=cf.get('common','start_date')
+startDate=cf['common']['start_date']
 startDate=datetime.datetime.strptime(startDate,"%Y-%m-%d").date()
 # recent_sync_days
-recent_sync_days=int(cf.get('common','recent_sync_days'))
+recent_sync_days=int(cf['common']['recent_sync_days'])
 
+database=cf['mysql-database']
 # conn=pymysql.connect(cf.get('mysql-database','host'),cf.get('mysql-database','user'),cf.get('mysql-database','passwd'),cf.get('mysql-database','db'),cf.get('mysql-database','charset'))
-conn=pymysql.connect(host=cf.get('mysql-database','host'),user=cf.get('mysql-database','user'),passwd=cf.get('mysql-database','password'),db=cf.get('mysql-database','db'),charset=cf.get('mysql-database','charset'))
+conn=pymysql.connect(host=database['host'],user=database['user'],passwd=database['password'],db=database['db'],charset=database['charset'])
 
+# 加载代理配置
+if 'proxies' in cf.sections() and int(cf['proxies']['enabled']):
+    proxies={
+        'http':cf['proxies']['http'],
+        'https':cf['proxies']['https']
+    }
+else:
+    proxies=int(cf['proxies']['enabled'])
 
 thLock=threading.Lock()
 dateQueue=queue.Queue()
@@ -88,7 +97,10 @@ def get_water_data_by_id_and_date(modelId,cDate):
         'cache-control': "no-cache"
         }
     querystring = {"moduleId":modelId,"struts.portlet.mode":"view","struts.portlet.action":"/portlet/waterFront!getDatas.action"}
-    response = requests.request("POST", url, data=payload, headers=headers, params=querystring,proxies=proxies,timeout=10)
+    if proxies:
+        response = requests.request("POST", url, data=payload, headers=headers, params=querystring,proxies=proxies,timeout=10)
+    else:
+        response = requests.request("POST", url, data=payload, headers=headers, params=querystring,timeout=10)
     try:
         if(response.status_code!=200 or check_json(response.text)):
             # 查询出错

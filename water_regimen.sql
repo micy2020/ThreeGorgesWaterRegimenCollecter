@@ -1,25 +1,5 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 50723
- Source Host           : localhost:3306
- Source Schema         : three_gorges_water_regimen
-
- Target Server Type    : MySQL
- Target Server Version : 50723
- File Encoding         : 65001
-
- Date: 02/03/2019 13:35:21
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for water_regimen
--- ----------------------------
 DROP TABLE IF EXISTS `water_regimen`;
 CREATE TABLE `water_regimen`  (
   `id` int(255) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
