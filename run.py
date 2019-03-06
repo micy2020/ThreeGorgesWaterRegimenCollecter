@@ -10,6 +10,8 @@ import configparser
 
 url = "http://www.ctg.com.cn/eportal/ui"
 
+proxies = {'http': 'http://localhost:8118', 'https': 'http://localhost:8118'}
+
 modelIdList=[
         '50c13b5c83554779aad47d71c1d1d8d8', # 三峡
         '622108b56feb41b5a9d1aa358c52c236', # 葛洲坝
@@ -86,7 +88,7 @@ def get_water_data_by_id_and_date(modelId,cDate):
         'cache-control': "no-cache"
         }
     querystring = {"moduleId":modelId,"struts.portlet.mode":"view","struts.portlet.action":"/portlet/waterFront!getDatas.action"}
-    response = requests.request("POST", url, data=payload, headers=headers, params=querystring, timeout=10)
+    response = requests.request("POST", url, data=payload, headers=headers, params=querystring,proxies=proxies,timeout=10)
     try:
         if(response.status_code!=200 or check_json(response.text)):
             # 查询出错
@@ -121,15 +123,22 @@ def update_database(date,data):
         cursor.close()
         return False
 def get_all_water_data_by_date_section(startDate,endDate):
+    # 开始获取
+    print("开始获取数据,日期区间:"+startDate.strftime("%Y-%m-%d")+" - "+endDate.strftime("%Y-%m-%d"))
     currentDate=startDate
     while(currentDate<=endDate):
         # 获取该天数据
-        currentDateData=get_data_by_date(currentDate)
-        # 存储数据到 sql 数据库中
-        update_database(currentDate.strftime("%Y-%m-%d"),currentDateData)
-        # 日期+1
-        print(currentDate," 已同步")
-        currentDate=currentDate+datetime.timedelta(days=1)
+        try:
+        	currentDateData=get_data_by_date(currentDate)
+        	# 存储数据到 sql 数据库中
+        	update_database(currentDate.strftime("%Y-%m-%d"),currentDateData)
+        	# 日期+1
+        	print(currentDate," 已同步")
+        	currentDate=currentDate+datetime.timedelta(days=1)
+        except Exception as e:
+                print("获取数据失败,运行出错")
+                print(e)
+                return False
     return True
 
 def create_table():
@@ -169,6 +178,7 @@ def database_backup():
 
 def update_excel_file():
     outputFile=xlwt.Workbook(targetDir+excelFileName)
+    print("打开Excel文件:"+targetDir+excelFileName)
     cursor=conn.cursor()
     # 分站点类型导出为表
     for site in modelNameList:
@@ -191,6 +201,7 @@ def update_excel_file():
                 sheet.write(row,col,u'%s'%results[row-1][col])
     cursor.close()
     outputFile.close()
+    print("文件写入完成.")
     # outputFile.save(excelFileName)
     # 将文件复制到下载目录
     # outputFile.save(targetDir+excelFileName)
