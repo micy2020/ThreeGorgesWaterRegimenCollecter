@@ -5,6 +5,43 @@
 ## 使用说明
 此脚本用于服务端。自动自动采集数据，并存到数据库，提供文件下载。
 
+###　配置文件
+
+```bash
+[common]
+； 同步设置
+; 最早同步时间
+start_date=2019-2-28
+; 近期同步天数
+recent_sync_days=7
+
+; mysql 数据库配置
+[mysql-database]
+host=127.0.0.1
+user=root
+password=
+db=three_gorges_water_regimen
+main_table=water_regimen
+charset=utf8
+
+; Excel文件名及路径
+[excel-file]
+name=ThreeGorgesWaterRegimen.xlsx
+path=
+
+; 代理设置
+[proxies]
+; 是否开启 1/0
+enabled=0
+; http 代理
+http=127.0.0.1:8118
+; https 代理
+https=127.0.0.1:8118
+```
+
+
+
+
 ## 数据下载地址
 直接下载地址为: https://s.cuger.cn/files/ThreeGorgesWaterRegimen.xlsx
 
