@@ -169,7 +169,22 @@ def create_table():
         cursor.close()
         conn.commit()
         return False
-            
+
+def delete_old_tables():
+    # 需要保持的日期
+    startDatetime=datetime.datetime.today()-datetime.timedelta(days=recent_sync_days)
+    # 获取旧表名称列表
+    cursor=conn.cursor()
+    cursor.execute("SHOW TABLES LIKE 'water_regimen_%'")
+    # 获取所有表
+    for t in cursor.fetchall():
+        # 检查时间是否超过限制
+        dbDatetime=datetime.datetime.strptime(t[0][14:],"%Y%m%d%H%M%S")
+        if dbDatetime<startDatetime:
+            cursor.execute("DROP TABLE "+t[0])
+            print("删除过旧的表: "+t[0])
+    cursor.close()
+    return True
 
 def database_backup():
     cursor=conn.cursor()
@@ -183,6 +198,8 @@ def database_backup():
     cursor.execute("SELECT max(date) FROM water_regimen")
     row=cursor.fetchone()
     cursor.close()
+    # 删除过久的备份
+    delete_old_tables()
     if not row or not row[0]:
         return False
     else:
