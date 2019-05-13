@@ -46,7 +46,7 @@ https=127.0.0.1:8118
 
 ## 数据预览
 
-![2001-2019水位](https://raw.githubusercontent.com/CUGxia/ThreeGorgesWaterRegimenCollecter/master/res/三峡库区水位2001-2019.png)
+![2001-2019水位](https://blog.cuger.cn/images/%E4%B8%89%E5%B3%A1%E5%BA%93%E5%8C%BA%E6%B0%B4%E4%BD%8D2001-2019.png)
 ![2019年上游水位](https://raw.githubusercontent.com/CUGxia/ThreeGorgesWaterRegimenCollecter/master/res/三峡库区水位2019.png)
 
 ## 数据下载地址
