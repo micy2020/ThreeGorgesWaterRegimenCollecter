@@ -5,7 +5,7 @@
 
 博客: https://blog.cuger.cn/2019/03/04/三峡库区水情水位信息获取/
 
-直接下载链接: https://s.cuger.cn/files/ThreeGorgesWaterRegimen.xlsx
+直接下载链接: https://api.cuger.cn/ThreeGorgesWaterRegimenCollector/ThreeGorgesWaterRegimen.xlsx
 
 ## 使用说明
 此脚本用于服务端。自动自动采集数据，并存到数据库，提供文件下载。
@@ -50,7 +50,7 @@ https=127.0.0.1:8118
 ![2019年上游水位](https://raw.githubusercontent.com/CUGxia/ThreeGorgesWaterRegimenCollecter/master/res/三峡库区水位2019.png)
 
 ## 数据下载地址
-直接下载地址为: https://s.cuger.cn/files/ThreeGorgesWaterRegimen.xlsx
+直接下载地址为: https://api.cuger.cn/ThreeGorgesWaterRegimenCollector/ThreeGorgesWaterRegimen.xlsx
 
 # 联系
 Blog: https://blog.cuger.cn
