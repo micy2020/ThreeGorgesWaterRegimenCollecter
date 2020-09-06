@@ -54,7 +54,7 @@ https=127.0.0.1:8118
 
 # 联系
 Blog: https://blog.cuger.cn
-Email: cug_xia@foxmail.com
+Email: cug_xia@gmail.com
 
 ## 赞助
 ![赞助](https://blog.cuger.cn/images/pay.jpg)
