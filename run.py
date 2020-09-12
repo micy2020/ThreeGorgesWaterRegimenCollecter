@@ -216,7 +216,7 @@ def update_excel_file():
         cursor.execute("SELECT date,hour,site,upLevel,downLevel,inSpeed,outSpeed FROM water_regimen WHERE site='%s' ORDER BY date DESC,hour DESC"%site)
         # fields=cursor.description
         fields=['日期','时间','站点','上游水位(m)','下游水位(m)','入库(m^3/s)','出库(m^3/s)']
-        cursor.scroll(0,mode='absolute')
+        # cursor.scroll(0,mode='absolute')
         results=cursor.fetchall()
         # 记录为表
         sheet=outputFile.add_worksheet(site)
