@@ -10,8 +10,6 @@ import configparser
 
 url = "http://www.ctg.com.cn/eportal/ui"
 
-proxies = {'http': 'http://localhost:8118', 'https': 'http://localhost:8118'}
-
 modelIdList=[
         '50c13b5c83554779aad47d71c1d1d8d8', # 三峡
         '622108b56feb41b5a9d1aa358c52c236', # 葛洲坝
@@ -46,6 +44,9 @@ startDate=datetime.datetime.strptime(startDate,"%Y-%m-%d").date()
 recent_sync_days=int(cf['common']['recent_sync_days'])
 
 database=cf['mysql-database']
+# backup_regimen_hours
+backup_regimen_hours = int(database['backup_regimen_hours'])
+
 # conn=pymysql.connect(cf.get('mysql-database','host'),cf.get('mysql-database','user'),cf.get('mysql-database','passwd'),cf.get('mysql-database','db'),cf.get('mysql-database','charset'))
 conn=pymysql.connect(host=database['host'],user=database['user'],passwd=database['password'],db=database['db'],charset=database['charset'])
 
@@ -172,7 +173,7 @@ def create_table():
 
 def delete_old_tables():
     # 需要保持的日期
-    startDatetime=datetime.datetime.today()-datetime.timedelta(days=recent_sync_days)
+    startDatetime=datetime.datetime.today()-datetime.timedelta(days=backup_regimen_hours)
     # 获取旧表名称列表
     cursor=conn.cursor()
     cursor.execute("SHOW TABLES LIKE 'water_regimen_%'")
