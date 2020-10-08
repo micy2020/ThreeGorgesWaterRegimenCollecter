@@ -173,7 +173,7 @@ def create_table():
 
 def delete_old_tables():
     # 需要保持的日期
-    startDatetime=datetime.datetime.today()-datetime.timedelta(days=backup_regimen_hours)
+    startDatetime=datetime.datetime.today()-datetime.timedelta(hours=backup_regimen_hours)
     # 获取旧表名称列表
     cursor=conn.cursor()
     cursor.execute("SHOW TABLES LIKE 'water_regimen_%'")
