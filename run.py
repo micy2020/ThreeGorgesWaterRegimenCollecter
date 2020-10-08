@@ -172,6 +172,7 @@ def create_table():
         return False
 
 def delete_old_tables():
+    print('开始清理旧表...')
     # 需要保持的日期
     startDatetime=datetime.datetime.today()-datetime.timedelta(days=backup_regimen_hours)
     # 获取旧表名称列表
@@ -195,6 +196,7 @@ def database_backup():
         create_table()
     # 复制表
     cursor.execute("CREATE TABLE water_regimen_%s SELECT * FROM water_regimen" % datetime.datetime.today().strftime("%Y%m%d%H%M%S"))
+    print('复制表成功')
     # 获取最大的日期
     cursor.execute("SELECT max(date) FROM water_regimen")
     row=cursor.fetchone()
